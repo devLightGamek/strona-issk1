@@ -1,0 +1,64 @@
+/* ============================================================
+   KALENDARZ — 3 miesiące obok siebie na komputerze.
+   Lewy: poprzedni, środek: wybrany/bieżący, prawy: następny.
+   ============================================================ */
+.calendar-toolbar{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+
+/* Główny układ trzech miesięcy */
+.calendar3,.calendars{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.08fr) minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+}
+
+/* Pojedynczy mały miesiąc */
+.month{
+  min-width:0;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+}
+.month.current{box-shadow:0 5px 18px #173d6420;border-color:#d9a083}
+.month h2{text-align:center;font-size:16px;margin:3px 0 10px;text-transform:none}
+.week,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.week div{text-align:center;font-size:10px;font-weight:800;color:#74818e;padding:3px 0}
+
+/* Małe pola dni — nie rozciągamy ich do wysokości całego ekranu */
+.day{
+  aspect-ratio:1.18;
+  min-height:32px;
+  max-height:52px;
+  border:1px solid transparent;
+  border-radius:7px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  position:relative;
+  background:#f8fafb;
+  font-size:12px;
+}
+.day:hover{border-color:#d28a67}
+.day.blank{visibility:hidden}
+.day.today{background:var(--yellow);font-weight:900}
+.day.past-service{background:#f3c2c2;color:#7d1d1d}
+.day.future-service{background:#c8efd7;color:#0e6336}
+.day.has-service::after{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;position:absolute;bottom:3px}
+.legend{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:14px;font-size:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px}
+
+/* Na mniejszych ekranach nadal zachowujemy 3 miesiące, dopóki jest na nie miejsce. */
+@media(max-width:1000px){
+  .calendar3,.calendars{gap:8px}
+  .month{padding:8px}
+  .month h2{font-size:14px}
+  .day{font-size:11px;min-height:28px}
+}
+
+/* Telefon: pokazujemy tylko miesiąc środkowy, żeby dni pozostały czytelne. */
+@media(max-width:700px){
+  .calendar3,.calendars{grid-template-columns:1fr}
+  .month:not(.current){display:none}
+  .day{max-height:none;min-height:38px}
+}
